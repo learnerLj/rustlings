@@ -1,10 +1,3 @@
-// This is a quiz for the following sections:
-// - Strings
-// - Vecs
-// - Move semantics
-// - Modules
-// - Enums
-//
 // Let's build a little machine in the form of a function. As input, we're going
 // to give a list of strings and commands. These commands determine what action
 // is going to be applied to the string. It can either be:
@@ -13,7 +6,7 @@
 // - Append "bar" to the string a specified amount of times
 //
 // The exact form of this will be:
-// - The input is going to be a vector of a 2-length tuple,
+// - The input is going to be a vector of 2-length tuples,
 //   the first element is the string, the second one is the command.
 // - The output element is going to be a vector of strings.
 
@@ -31,17 +24,12 @@ mod my_module {
     pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
         let mut output = Vec::new();
 
-        for (mut string, command) in input {
+        for (string, command) in input {
             // Create the new string.
             let new_string = match command {
                 Command::Uppercase => string.to_uppercase(),
                 Command::Trim => string.trim().to_string(),
-                Command::Append(n) => {
-                    for _ in 0..n {
-                        string += "bar";
-                    }
-                    string
-                }
+                Command::Append(n) => string + &"bar".repeat(n),
             };
 
             // Push the new string to the output vector.
@@ -56,15 +44,10 @@ mod my_module {
     pub fn transformer_iter(input: Vec<(String, Command)>) -> Vec<String> {
         input
             .into_iter()
-            .map(|(mut string, command)| match command {
+            .map(|(string, command)| match command {
                 Command::Uppercase => string.to_uppercase(),
                 Command::Trim => string.trim().to_string(),
-                Command::Append(n) => {
-                    for _ in 0..n {
-                        string += "bar";
-                    }
-                    string
-                }
+                Command::Append(n) => string + &"bar".repeat(n),
             })
             .collect()
     }
